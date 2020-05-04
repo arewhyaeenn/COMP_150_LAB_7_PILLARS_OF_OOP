@@ -50,7 +50,7 @@ public interface Polygon
 }
 ```
 
-The methods the `interface` above (and in any `interface`) **must** be `public` and `abstract`. In fact, the `public abstract` on the start of each method declaration above can be omitted. IntelliJ will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods. `interface` methods cannot be `static`, meaning they are instance-specific.
+The methods in the `interface` above (and in any `interface`) **must** be `public` and `abstract`. In fact, the `public abstract` on the start of each method declaration above can be omitted. IntelliJ will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods. `interface` methods cannot be `static`, meaning they are instance-specific.
 
 The class data above (`DEFAULT_N_SIDES`) is `public`, `final`, and `static`. These three modifiers, like `public` and `abstract` for the methods, are redundant and can be omitted. In other words, the `interface` above is identical to this one:
 
