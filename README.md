@@ -1,9 +1,11 @@
-# COMP 150 Lab 7 - Pillars of OOP Part 1
+# COMP 150 Lab 7 - Pillars of OOP 1
 
 In this lab:
 
-* Encapsulation (here and there)
-* Abstraction and polymorphism via a single `interface`
+* Polymorphism again
+* Abstraction via `interface`
+* Overriding again
+* Encapsulation again
 
 The **Pillars of Object Oriented Programming** are **polymorphism**, **inheritance**, **abstraction** and **encapsulation**. We will be talking about each of these conceptually and as they appear in Java.
 
@@ -25,6 +27,8 @@ Finally, we have touched on polymorphism in the context of **inheritance**; ever
 * Every instance of every class literally **is an `Object`** (that is, it is an instance of the `Object` class), likely with some extra capabilities defined by said **extra stuff**™.
 
 ## Abstraction and polymorphism with the `interface`
+
+Here we will discuss another example of polymorphism.
 
 Occasionally you will need to implement a category of classes which perform the same (or similar) tasks in different ways and which possible store their data in different forms. An `interface` can be used to organize these classes, allowing them to be tested by the same client (among other things).
 
@@ -127,9 +131,9 @@ Notice the `@Override` annotation on all methods which are overridden from the `
 * They will cause a compile-time error if an overridden method declaration has a type (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can be created where overriding was intended.
 * They improve readability. In fact, many IDEs will display extra information detailing the location of the method being overridden if the `@Override` annotation is present before a method.
 
-**EXERCISE** Create a client to test the `Rectangle` class above. Start with the client below, and test every `public` element in the `Rectangle` class. Note that `myRectangle` is declared as a `Polygon` but uses the `Rectangle` constructor; because `Rectangle implements Polygon`, any `Rectangle` **is** a `Polygon`. Because `myRectangle` is declared as a `Polygon` and not as a `Rectangle`, it can only be used to access implemented members of the `Polygon` class, and not to access other members of the `Rectangle` class.
+## Task 1
 
-**EXERCISE** Create the `Square`, `Triangle`, and `Circle` classes. In each class, you will need to decide what instance data to declare, create at least 1 constructor, and implement all of the `Polygon` methods. You may assume that `Circle`s have 0 sides (although there is some philosophical argument toward inifinite sides as well).
+Create a client to test the `Rectangle` class above. Start with the client below, and test every `public` element in the `Rectangle` class. Note that `myRectangle` is declared as a `Polygon` but uses the `Rectangle` constructor; because `Rectangle implements Polygon`, any `Rectangle` **is** a `Polygon`. Because `myRectangle` is declared as a `Polygon` and not as a `Rectangle`, it can only be used to access implemented members of the `Polygon` class, and not to access other members of the `Rectangle` class.
 
 ```java
 public class PolygonClient
@@ -142,7 +146,13 @@ public class PolygonClient
 }
 ```
 
-**EXERCISE** Create a new `PolygonClient` to test all four implementations of the `Polygon` class. Your client shoud continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its `static` `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods `return` a `double` value or a `String` value (`"circle"`, `"rectangle"`, `"square"` or `"triangle"`), respectively, from `System.in`.
+## Task 2
+
+Create the `Square`, `Triangle`, and `Circle` classes. In each class, you will need to decide what instance data to declare, create at least 1 constructor, and implement all of the `Polygon` methods. You may assume that `Circle`s have 0 sides (although there is some philosophical argument toward inifinite sides as well).
+
+## Task 3
+
+Create a new `PolygonClient` to test all four implementations of the `Polygon` class. Your client shoud continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its `static` `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods `return` a `double` value or a `String` value (`"circle"`, `"rectangle"`, `"square"` or `"triangle"`), respectively, from `System.in`.
 
 ```java
 import java.util.Scanner;
@@ -206,9 +216,11 @@ public class InputHandler
 }
 ```
 
-**EXERCISE** Write me a nice note. It might be about that goofy `InputHandler` class above. It might be about my outstanding hairdo. If you are in one of my classes, submit it with your lab. If not, write it on a napkin and burn it in a small metal or glass container, and then howl at the sky for precisely ten seconds and your message will be delivered to me by the owl or butterfly nearest you at its earliest convenience.
+## Task 4
 
-## Task 1
+Write me a nice note. It might be about that goofy `InputHandler` class above. It might be about my outstanding hairdo. If you are in one of my classes, submit it with your lab. If not, write it on a napkin and burn it in a small metal or glass container, and then howl at the sky for precisely ten seconds and your message will be delivered to me by the owl or butterfly nearest you at its earliest convenience.
+
+## Task 5
 
 If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) (or any of the HUNDREDS youtube video on the topic).
 
@@ -233,22 +245,6 @@ Consider the circle with radius 1 centered on the origin. It is contained comple
 Generate 10000 random cartesian points in this 2x2 square around the origin. Count how many are inside the unit circle centered on the origin (by checking if the distance to the origin is less than 1). Calculate the proportion of generated random points which are in the circle. Multiply this proportion by 4 (the area of the entire square) to approximate the the area of the circle (and thereby approximate pi).
 
 Discuss the results.
-
-## Inheritance
-
-- extends, super, superclass, subclass
-- simple example, small inheritance hierarchy
-- overwriting methods
-
-## Abstract classes
-
-- larger example, larger inheritance hierarchy
-
-## Multiple Inheritance
-
-## Extra Task
-
-Estimate Pi with random Point generation.
 
 
 
