@@ -1,12 +1,9 @@
-# COMP 150 Lab 7 - Polymorphism, Inheritance, Abstraction and Encapsulation
+# COMP 150 Lab 7 - Pillars of OOP Part 1
 
 In this lab:
 
 * Encapsulation (here and there)
 * Abstraction and polymorphism via a single `interface`
-* Inheritance
-* Abstract classes
-* Multiple inheritance via interfacing
 
 The **Pillars of Object Oriented Programming** are **polymorphism**, **inheritance**, **abstraction** and **encapsulation**. We will be talking about each of these conceptually and as they appear in Java.
 
@@ -215,17 +212,31 @@ public class InputHandler
 
 If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) (or any of the HUNDREDS youtube video on the topic).
 
-(I will record the zoom hours and add another video [here](), discussing these two coordinate schemes among other lab elements)
+I will record the zoom hours and add another video [here](), discussing these two coordinate schemes among other lab elements.
 
 Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes.
+
+If you mouse over the underlined immediate syntax errors in `CartesianPoint.java` and `PolarPoint.java`, your IDE will likely instruct you on a shortcut to create (empty) method definitions for all missing abstract methods from the `Point` `interface`.
 
 Create a client class to test these methods.
 
 Note that in both `PolarPoint` and `CartesianPoint`, the instance data is `private`, but all of the methods defined in `Point` are `public`. This is an example of **encapsulation**; the data and interface are separated, so any changes made to `PolarPoint` or `CartesianPoint` which don't require modifying `Point` itself don't create the need to then modify clients which uses `Point`s.
 
+## Bonus Task
+
+This is a mathy bonus task that has nothing to do with polymorphism
+
+Recall that the area of a circle is pi times the radius squared. As such, a circle with radius 1 should have area equal to pi.
+
+Consider the circle with radius 1 centered on the origin. It is contained completely within the 2x2 square with corners *(-1,-1)*, *(-1,1)*, *(1,-1)* and *(1,1)* (in cartesian coordinates). This square has area equal to 4 square units.
+
+Generate 10000 random cartesian points in this 2x2 square around the origin. Count how many are inside the unit circle centered on the origin (by checking if the distance to the origin is less than 1). Calculate the proportion of generated random points which are in the circle. Multiply this proportion by 4 (the area of the entire square) to approximate the the area of the circle (and thereby approximate pi).
+
+Discuss the results.
+
 ## Inheritance
 
-- extends
+- extends, super, superclass, subclass
 - simple example, small inheritance hierarchy
 - overwriting methods
 
@@ -238,8 +249,6 @@ Note that in both `PolarPoint` and `CartesianPoint`, the instance data is `priva
 ## Extra Task
 
 Estimate Pi with random Point generation.
-
-
 
 
 
