@@ -26,6 +26,8 @@ Finally, we have touched on polymorphism in the context of **inheritance**; ever
 * Every class is the `Object` class, but with **extra stuff**™ (whatever is defined in the class body).
 * Every instance of every class literally **is an `Object`** (that is, it is an instance of the `Object` class), likely with some extra capabilities defined by said **extra stuff**™.
 
+We will talk significantly more about this last form of polymorphism in the next lab. 
+
 ## Abstraction and polymorphism with the `interface`
 
 Here we will discuss another example of polymorphism.
@@ -126,9 +128,13 @@ public class Rectangle implements Polygon
 }
 ```
 
+**<a name="q1"></a>[EXERCISE 1](#a1)** Notice that the `setWidth` and `setHeight` methods are very similar. One could even say they are repetitive. How might one change the WET solution above into a DRY solution?
+
+**<a name="a1"></a>[SOLUTION 1](#q1)** We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit redundant; as is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
+
 Notice the `@Override` annotation on all methods which are overridden from the `Polygon` `interface`. While these tags are not mandatory when overriding methods, the are beneficial for the following reasons:
 
-* They will cause a compile-time error if an overridden method declaration has a type (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can be created where overriding was intended.
+* They will cause a compile-time error if an overridden method declaration has a typo (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can be created where overriding was intended.
 * They improve readability. In fact, many IDEs will display extra information detailing the location of the method being overridden if the `@Override` annotation is present before a method.
 
 ## Task 1
@@ -148,11 +154,11 @@ public class PolygonClient
 
 ## Task 2
 
-Create the `Square`, `Triangle`, and `Circle` classes. In each class, you will need to decide what instance data to declare, create at least 1 constructor, and implement all of the `Polygon` methods. You may assume that `Circle`s have 0 sides (although there is some philosophical argument toward inifinite sides as well).
+Create the `Square`, `Triangle`, and `Circle` classes. In each class, you will need to decide what instance data to declare, create at least 1 constructor, and implement all of the `Polygon` methods.`Circle`s have 0 sides.
 
 ## Task 3
 
-Create a new `PolygonClient` to test all four implementations of the `Polygon` class. Your client shoud continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its `static` `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods `return` a `double` value or a `String` value (`"circle"`, `"rectangle"`, `"square"` or `"triangle"`), respectively, from `System.in`.
+Create a new `PolygonClient` to test all four implementations of the `Polygon` class. Your client shoud continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue. You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its static `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods return a `double`, `String`, or `boolean` respectively, from `System.in`. In the case of `getPolygonFromUser`, the output is "circle", "rectangle", "square", or "triangle".
 
 ```java
 import java.util.Scanner;
@@ -218,13 +224,13 @@ public class InputHandler
 
 ## Task 4
 
-Write me a nice note. It might be about that goofy `InputHandler` class above. It might be about my outstanding hairdo. If you are in one of my classes, submit it with your lab. If not, write it on a napkin and burn it in a small metal or glass container, and then howl at the sky for precisely ten seconds and your message will be delivered to me by the owl or butterfly nearest you at its earliest convenience.
+Write me a nice note. It might be about that goofy `InputHandler` class above. It might be about my outstanding hairdo. If you are in one of my classes, submit it with your lab. If not, write it on a napkin and burn it in a small metal or glass container, and then howl at the sky for precisely ten seconds and your message will be delivered to me by the owl or butterfly nearest you at its earliest convenience. Note that constructive criticism does not qualify as "nice" and will not receive points.
 
 ## Task 5
 
-If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) (or any of the HUNDREDS youtube video on the topic).
+If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) (or any of the literally hundreds of youtube video on the topic).
 
-I will record the zoom hours and add another video [here](), discussing these two coordinate schemes among other lab elements.
+I will record the zoom hours and add another video [here]()(not recorded yet), discussing these two coordinate schemes among other lab elements.
 
 Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes.
 
@@ -232,11 +238,11 @@ If you mouse over the underlined immediate syntax errors in `CartesianPoint.java
 
 Create a client class to test these methods.
 
-Note that in both `PolarPoint` and `CartesianPoint`, the instance data is `private`, but all of the methods defined in `Point` are `public`. This is an example of **encapsulation**; the data and interface are separated, so any changes made to `PolarPoint` or `CartesianPoint` which don't require modifying `Point` itself don't create the need to then modify clients which uses `Point`s.
+Note that in both `PolarPoint` and `CartesianPoint`, the instance data is `private`, but all of the methods defined in `Point` are `public`. This is an example of **encapsulation**; the data and interface are separated, so changes can be made to `PolarPoint` or `CartesianPoint` individually and as long as these two classes adhere to the `Point` interface, uses of `Point`s in other classes will not need to change.
 
 ## Bonus Task
 
-This is a mathy bonus task that has nothing to do with polymorphism
+This is a mathy bonus task that has nothing to do with polymorphism. It is not worth extra credit.
 
 Recall that the area of a circle is pi times the radius squared. As such, a circle with radius 1 should have area equal to pi.
 
