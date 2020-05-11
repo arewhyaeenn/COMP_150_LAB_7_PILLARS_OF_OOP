@@ -232,7 +232,7 @@ If you're not **very familiar** with cartesian and polar coordinates, check out 
 
 I will record the zoom hours and add another video [here]()(not recorded yet), discussing these two coordinate schemes among other lab elements.
 
-Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes.
+Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes. The `Point` class is missing one of its accessor methods! Keeping the two coordinate systems (cartesian and polar) in mind, identify which "getter" method is missing, and add it to the `Point` class.
 
 If you mouse over the underlined immediate syntax errors in `CartesianPoint.java` and `PolarPoint.java`, your IDE will likely instruct you on a shortcut to create (empty) method definitions for all missing abstract methods from the `Point` `interface`.
 
