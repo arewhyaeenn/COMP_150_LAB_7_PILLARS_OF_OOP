@@ -1,11 +1,13 @@
-# COMP 150 Lab 7 - Pillars of OOP 1
+# Object-Oriented Programming - Pillars of OOP 1
 
 In this lab:
 
 * Polymorphism again
-* Abstraction via `interface`
-* Overriding again
-* Encapsulation again
+* Abstraction and inheritance via `interface` implementations
+* Overriding
+* Encapsulation
+* Inheritance via extending interfaces
+* `default` methods and multiple inheritance
 
 The **Pillars of Object Oriented Programming** are **polymorphism**, **inheritance**, **abstraction** and **encapsulation**. We will be talking about each of these conceptually and as they appear in Java.
 
@@ -17,26 +19,26 @@ Quoting the wiki linked above:
 
 ## Polymorphism Revisited
 
-We have discussed **polymorphism** briefly with respect to the `+` operator in a previous lab. The `+` operator is used to denote a variety of operations depending on its surroundings; it performs concatenation on `String`s and addition on numerical primitives. In other words, the `+` operator has **multiple forms** or **multiple definitions**.
+We have discussed **polymorphism** briefly with respect to the `+` operator in a previous lab. The `+` operator is used to denote a variety of operations depending on its surroundings; it performs concatenation on `String`s and addition on numerical primitives. In other words, the `+` operator has **multiple forms** or **multiple definitions**. The word "polymorphism" broken into its roots means "many forms".
 
-We have also discussed polymorphism in the context of overloaded functions by creating multiple functions sharing an identifier to deal with different argument configurations.
+We have also discussed polymorphism in the context of overloading functions by creating multiple functions sharing an identifier to deal with different argument configurations.
 
-Finally, we have touched on polymorphism in the context of **inheritance**; every class **inherits from** (or **extends**) the `Object` class, meaning:
+Finally, we have touched on polymorphism in the context of **class inheritance**; every class **inherits from** (or **extends**) the `Object` class, meaning:
 
 * Every class is the `Object` class, but with **extra stuff**™ (whatever is defined in the class body).
 * Every instance of every class literally **is an `Object`** (that is, it is an instance of the `Object` class), likely with some extra capabilities defined by said **extra stuff**™.
 
 We will talk significantly more about this last form of polymorphism in the next lab. 
 
-## Abstraction and polymorphism with the `interface`
+## Abstraction, Polymorphism and Inheritance with `interface`
 
 Here we will discuss another example of polymorphism.
 
-Occasionally you will need to implement a category of classes which perform the same (or similar) tasks in different ways and which possible store their data in different forms. An `interface` can be used to organize these classes, allowing them to be tested by the same client (among other things).
+Occasionally you will need to implement a category of classes which perform the same (or similar) tasks in different ways and which possibly store their data in different forms. An `interface` can be used to organize these classes, allowing them to be tested by the same client, declared with the same type, and otherwise used interchangeably.
 
-This is done through **abstraction**. `interface`s consist of **abstract methods**. These are essentially method declarations without bodies, declaring a method which must be defined by any implementation of the `interface`.
+This is done through **abstraction**. `interface`s consist of **abstract methods**. These are essentially method declarations without bodies, declaring a method which must be defined by any implementation of the `interface`. An abstract method specifies some functionality that implementations must have, but does not fill out how that functionality is achieved.
 
-Classes can then implement these `interface`s by "filling in" their abstract methods' bodies.
+Classes can then implement these `interface`s by "filling in" their abstract methods' bodies. Implementations of an `interface` take the abstracted or generalized outline provided in the `interface` and create a tangible, fully defined version of it.
 
 For example, the `Polygon` `interface` below declares some abstract methods which must be filled out by any implementing class (and defines a default number of sides for implementing classes).
 
@@ -52,9 +54,11 @@ public interface Polygon
 }
 ```
 
-The methods in the `interface` above (and in any `interface`) **must** be `public` and `abstract`. In fact, the `public abstract` on the start of each method declaration above can be omitted. IntelliJ will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods. `interface` methods cannot be `static`, meaning they are instance-specific.
+The methods in the `interface` above (and in any `interface`) **must** be `public` and either `abstract` or `static` but not both. In fact, the `public abstract` on the start of each method declaration above can be omitted; methods in interfaces are assumed to be `public`, and if they aren't specified to be `static` then they are assumed to be `abstract`. Most IDEs will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods.
 
-The class data above (`DEFAULT_N_SIDES`) is `public`, `final`, and `static`. These three modifiers, like `public` and `abstract` for the methods, are redundant and can be omitted. In other words, the `interface` above is identical to this one:
+The class data above (`DEFAULT_N_SIDES`) is `public`, `final`, and `static`. These three modifiers, like `public` and `abstract` for the methods, are redundant and can be omitted. 
+
+Thus, the `interface` above is identical to this one:
 
 ```java
 public interface Polygon
@@ -68,7 +72,9 @@ public interface Polygon
 }
 ```
 
-Next, we will create four implementations of the `Polygon` interface: `Rectangle`, `Triangle`, `Square`, and `Circle`. `Rectangle` has been done below.
+We will create four implementations of the `Polygon` interface: `Rectangle`, `Triangle`, `Square`, and `Circle`. `Rectangle` has been done below. `Rectangle` is done below, and you'll create the others in your lab.
+
+<a name="rectangle"></a>
 
 ```java
 public class Rectangle implements Polygon
@@ -130,12 +136,369 @@ public class Rectangle implements Polygon
 
 **<a name="q1"></a>[EXERCISE 1](#a1)** Notice that the `setWidth` and `setHeight` methods are very similar. One could even say they are repetitive. How might one change the WET solution above into a DRY solution?
 
-**<a name="a1"></a>[SOLUTION 1](#q1)** We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit redundant; as is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
-
-Notice the `@Override` annotation on all methods which are overridden from the `Polygon` `interface`. While these tags are not mandatory when overriding methods, the are beneficial for the following reasons:
+The `@Override` annotation on all methods which are overridden from the `Polygon` `interface` are new; let's discuss them. To override a method is to replace the an inherited method with a new one. These `@Override` tags specify that the subsequent methods are taking the place of the abstract ones in the `Polygon` `interface`. While these tags are not mandatory when overriding methods, they are beneficial for the following reasons:
 
 * They will cause a compile-time error if an overridden method declaration has a typo (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can be created where overriding was intended.
 * They improve readability. In fact, many IDEs will display extra information detailing the location of the method being overridden if the `@Override` annotation is present before a method.
+
+The implementing class is said to **inherit from** the interface. Above, `Rectangle` inherits from `Polygon`. This is one example of **inheritance** in Java. We'll cover one more example in this reading, and two more in the next reading.
+
+## Interfaces and Encapsulation
+
+You might have noticed already how well `interface`s fit with the principle of encapsulation. The `interface` defines how clients will interact with implementations, but leaves the specifics of what goes on "under the hood" in the implementations up to them.
+
+Many different implementations of a single interface can be made. Moreover, members of these different interfaces can all be stored in variables of the same type. We could declare and instantiate a `Rectangle` instance like this:
+
+```java
+Rectangle myRectangle = new Rectangle (3, 4);
+```
+
+But we could also do it like this:
+
+```java
+Polygon myPoly = new Rectangle (3, 4);
+```
+
+Moreover, the `myPoly` variable in the second example is much more flexible than `myRectangle` is; `myPoly` isn't limited to referencing `Rectangle` instances, and can instead reference an instance of any implementation of `Polygon`. So, if you made a `Triangle` class which implemented `Polygon`, then the following would be completely valid:
+
+```java
+Polygon myPoly = new Rectangle(3, 4);
+myPoly = new Triangle(3, 4, 5);
+```
+
+This does come with a tradeoff, however: `myPoly` "doesn't know", at any given time, which implementation it references an instance of, so it cannot be used to access members of `Rectangle` or `Triangle` which are not declared in `Polygon`. So, the two implementations can be used interchangeably in `Polygon` variables, but these variables are limited to the functionality defined in the `Polygon` class. It is imperative, then, to declare **all** necessary methods for client interaction with `Polygon`s in the interfact itself.
+
+**<a name="q2"></a>[EXERCISE 2](#a2)** In the [`Rectangle`](#rectangle) implementation above, the `setWidth` and `setHeight` methods are private. Why might that be?
+
+## `default`
+
+An interface can specify a `default` implementation for its `abstract` methods.
+
+Consider the `Person` interface below:
+
+```java
+public interface Person
+{
+    String getName();
+    int getAge();
+    void incrementAge();
+}
+```
+
+We can specify a `default` implementation of `getName` by editing it as follows:
+
+```java
+public interface Person
+{
+    default String getName()
+    {
+        return "Joanne Buck";
+    };
+    
+    int getAge();
+    void incrementAge();
+}
+```
+
+With this `default` implementation provided, implementing classes do not need to implement that particular method; any implementations that don't implement the method will use the implementation provided by the interface.
+
+For instance, with `getName` implemented above, the following class is completely valid:
+
+```java
+public class JoanneBuck implements Person
+{
+    private int age;
+    
+    public JoanneBuck(int age)
+    {
+        this.age = age;
+    }
+
+    @Override
+    public int getAge()
+    {
+        return age;
+    }
+
+    @Override
+    public void incrementAge()
+    {
+        age++;
+    }
+}
+```
+
+Of course, implementing classes can instead choose to override the `default` implementation:
+
+```java
+public class JoanneBuck implements Person
+{
+    private int age;
+    final private static String NAME = "Joanne Buck";
+
+    public JoanneBuck(int age)
+    {
+        this.age = age;
+    }
+    
+    @Override
+    public String getName()
+    {
+        return NAME;
+    }
+
+    @Override
+    public int getAge()
+    {
+        return age;
+    }
+
+    @Override
+    public void incrementAge()
+    {
+        age++;
+    }
+}
+```
+
+**<a name="q3"></a>[EXERCISE 3](#a3)** Imagine you've made many implementations of an old interface, and then you update the interface by adding a single new method to it. Imagine moreover that many of the implementations should implement this particular new method identically. What should you do?
+
+## Extending Interfaces and Inheritance
+
+Consider this version of `Person`:
+
+```java
+public interface Person
+{
+    String getName();
+    int getAge();
+    void incrementAge();
+}
+```
+
+Consider further the goal of creating a `Student` interface. Any `Student` is also a `Person`, and should thereby have all of the functionality of a `Person`. We could simply copy-paste the contents of `Person` into `Student`, then add some **extra stuff**™:
+
+```java
+public interface Student
+{
+    String getName();
+    int getAge();
+    void incrementAge();
+    String getStudentID();
+    
+    default String getInstitution()
+    {
+        return "CSUCI";  // go dolphins
+    };
+}
+```
+
+Of course, this is a clear violation of DRY programming. Any time we update `Person`, we will also have to update `Student` in a similar way. Beyond the repeated code, we've increased the amount of work to maintain our code base in the future.
+
+We can instead use the `extends` keyword, to create a `Student` interface containing everything from `Person`, but with some **extra stuff**™:
+
+```java
+public interface Student extends Person
+{
+    String getStudentID();
+    default String getInstitution()
+    {
+        return "CSUCI";  // go dolphins
+    };
+}
+```
+
+This way, `Student` is shorter, and edits to `Person` will also update `Student` without extra work.
+
+This is an example of **inheritance**. The `Student` class **inherits from** the `Person` class. If a class implements the `Student` interface, it will inherently implement the `Person` interface as well, so any `Student` instance is also a `Person` instance.
+
+Note that the extended interface outlines a smaller or more specific category of objects. Every `Student` is a `Person`, but not every `Person` is a `Student`, so if we know someone is a `Student` then we can attribute more specificity to our understanding of their characteristics. The **extra stuff**™ in `Student` doesn't apply to all people, because it is too student-specific, so it must outline a smaller subset of people.
+
+## Multiple Inheritance
+
+A single class can implement multiple interfaces. Consider, for example, two extensions of `Person`, called `Student` and `Faculty`:
+
+```java
+public interface Person
+{
+    String getName();
+    int getAge();
+    void incrementAge();
+}
+```
+
+```java
+public interface Student extends Person
+{
+    String getStudentID();
+    default String getInstitution()
+    {
+        return "CSUCI";  // go dolphins
+    };
+}
+```
+
+```java
+public interface Faculty extends Person
+{
+    String getFacultyID();
+    default String getInstitution()
+    {
+        return "CSUCI";  // go dolphins
+    }
+}
+```
+
+The, imagine you want to implement a `TA` (**T**eaching **A**ssistant) class. A `TA` is both a `Student` and `Faculty`.
+
+At first glance, you might want to implement `TA` like this:
+
+```java
+public class TA implements Student, Faculty
+{
+    private int age;
+    private String name;
+    private String ID;
+    
+    public TA(String name, int age, String ID)
+    {
+        this.name = name;
+        this.age = age;
+        this.ID = ID;
+    }
+
+    @Override
+    public String getFacultyID()
+    {
+        return ID;
+    }
+
+    @Override
+    public String getStudentID()
+    {
+        return ID;
+    }
+
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
+    @Override
+    public int getAge()
+    {
+        return age;
+    }
+
+    @Override
+    public void incrementAge()
+    {
+        age++;
+    }
+}
+```
+
+The implementation above is *mostly* correct. It is missing an implementation of `getInstitution`... kind of. It would be more accurate to say, it has **too many** implementations of `getInstitution` (the two provided by default implementations in `Student` and `Faculty`) and it doesn't know which one to use. Thus `getInstitution` must be overwritten. One option is to simply call one of the two defaults:
+
+```java
+@Override
+public String getInstitution()
+{
+    return Student.super.getInstitution();
+}
+```
+
+Of course, the method can be overwritten with in the normal sense as well:
+
+```java
+@Override
+    public String getInstitution()
+    {
+        return this.institution;
+    }
+```
+
+This second overwritten `getInstitution` would require the addition of a `String institution` to the `TA` class, of course.
+
+`TA` could also be made an `interface`, and could extend both `Student` and `Faculty`:
+
+```java
+public interface TA extends Student, Faculty
+{
+    @Override
+    default String getInstitution()
+    {
+        return "CSUCI";
+    }
+}
+```
+
+This extension requires the same clarification as the `TA` class: it must either decide which default implementation of `getInstitution` to use or create a new default implementation.
+
+**<a name="q4"></a>[EXERCISE 4](#a4)** Decide which of the following should extend which others. If you don't know what all of these are (like I didn't while writing this) you should google! Don't stress too much about getting this answer "right". It is subjective, and these could be organized in different ways using different types of inheritance.
+
+* `Vehicle`
+* `AerialVehicle`
+* `Propeller`
+* `JetEngine`
+* `Boat`
+* `Sedan`
+* `Truck`
+* `ATV`
+* `FordF150`
+* `ToyotaTundra`
+* `WheeledVehicle`
+* `HondaAccord`
+* `ToyotaCamry`
+* `JetPlane`
+* `Helicopter`
+* `FighterJet`
+* `SeaPlane`
+* `Airliner`
+* `Jetpack`
+* `MotorBoat`
+* `Canoe`
+
+## Answers to Selected Exercises
+
+### **<a name="a1"></a>[EXERCISE 1](#q1)** 
+
+We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit redundant; as is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
+
+### **<a name="a2"></a>[EXERCISE 2](#q2)**
+
+`Rectangle` is an implementation of `Polygon`; presumably its intended purpose, then, is to be referenced through a `Polygon` variable, otherwise it would just be implemented without the interface. `Polygon` doesn't have `setWidth` and `setHeight` methods, so there is no reason to make them public to `Rectangle`, as they would be inaccessible from `Polygon` variables anyway. Nothing would break if these extra methods were made public, but they are not part of the `Polygon` functionality, so they've been categorized as stuff happening "under the hood", not part of the interface through which `Polygons` interact, and therefore made inaccessible to clients.
+
+### **<a name="a3"></a>[EXERCISE 3](#q3)**
+
+The new method should be given a default implementation. This way, you'll only need to update implementations whose needs stray from this default.
+
+### **<a name="a4"></a>[EXERCISE 4](#q4)**
+
+Some of the following are kind of a stretch, as the formal definitions of a lot of these vary based on context, and some of them should be inheritance through [composition](https://en.wikipedia.org/wiki/Composition_over_inheritance). For instance, a `JetPlane` here is represented as "A `JetEngine` with **extra stuff**™", but it would be more accurate to say that a `JetPlane` contains a `JetEngine`, so a `JetPlane` would contain a field variable of type `JetEngine` instead of extending it. My point is, don't worry too much about the specifics of my "solution" below, as it is very subjective.
+
+* `Vehicle`
+* `Propeller`
+* `JetEngine` (does this count as a vehicle? you could ride one for a short time...)
+* `AerialVehicle extends Vehicle`
+* `Boat extends Vehicle, Propeller`
+* `WheeledVehicle extends Vehicle`
+* `Sedan extends WheeledVehicle`
+* `Truck extends WheeledVehicle`
+* `ATV extends WheeledVehicle`
+* `FordF150 extends Truck`
+* `ToyotaTundra extends Truck`
+* `HondaAccord extends Sedan`
+* `ToyotaCamry extends Sedan`
+* `JetPlane extends JetEngine, AerialVehicle`
+* `Helicopter extends Propeller, AerialVehicle`
+* `FighterJet extends JetPlane`
+* `SeaPlane extends AerialVehicle, Boat?` (is it a boat? if you turn on the engine but don't take off...)
+* `Airliner extends JetPlane, WheeledVehicle`
+* `Jetpack extends JetEngine, AerialVehicle`
+* `MotorBoat extends Boat, Propeller`
+* `Canoe extends Boat`
 
 ## Task 1
 
@@ -158,7 +521,11 @@ Create the `Square`, `Triangle`, and `Circle` classes. In each class, you will n
 
 ## Task 3
 
-Create a new `PolygonClient` to test all four implementations of the `Polygon` class. Your client shoud continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue. You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its static `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods return a `double`, `String`, or `boolean` respectively, from `System.in`. In the case of `getPolygonFromUser`, the output is "circle", "rectangle", "square", or "triangle".
+Create a new `PolygonClient` to test all four implementations of the `Polygon` class. 
+
+Your client should continuously construct polygons for the user (storing them in an `ArrayList<Polygon>`). It should start by prompting the user for the polygon they want to create next (of the four options), and then follow up by prompting the user for whatever data is necessary to construct the desired polygon. Finally, it should ask the user if they want to continue. If they enter "yes" it should let them enter another polygon; if "no", it should print out all polygons that have been gathered thus far, as well the outputs of all of the methods from the `Polygon` interface.
+
+You may use the `InputHandler` class below to validate user inputs, and do not need to deal with user-input issues not handled by this class. You may read through it, or simply trust that its static `getDoubleFromUser`, `getPolygonFromUser`, and `getYesNoFromUser` methods return a `double`, `String`, or `boolean` respectively, from `System.in`. In the case of `getPolygonFromUser`, the output is "circle", "rectangle", "square", or "triangle".
 
 ```java
 import java.util.Scanner;
@@ -228,9 +595,7 @@ Write me a nice note. It might be about that goofy `InputHandler` class above. I
 
 ## Task 5
 
-If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) (or any of the literally hundreds of youtube video on the topic).
-
-I will record the zoom hours and add another video [here]()(not recorded yet), discussing these two coordinate schemes among other lab elements.
+If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) covering the two coordinate systems before starting this task.
 
 Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes. The `Point` class is missing one of its accessor methods! Keeping the two coordinate systems (cartesian and polar) in mind, identify which "getter" method is missing, and add it to the `Point` class.
 
