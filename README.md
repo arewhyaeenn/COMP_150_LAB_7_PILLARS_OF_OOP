@@ -11,7 +11,7 @@ In this lab:
 
 The **Pillars of Object Oriented Programming** are **polymorphism**, **inheritance**, **abstraction** and **encapsulation**. We will be talking about each of these conceptually and as they appear in Java.
 
-The primary motivations underlying the pillars (and the goal to keep in mind throughout this lab) are increased code reusability and decreased code dublication. In other words, [**don't repeat yourself** (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
+The primary motivations underlying the pillars (and the goals to keep in mind throughout this lab) are increased code reusability, decreased code dublication, and increased ease of code maintenance. In other words, [**don't repeat yourself** (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 
 Quoting the wiki linked above:
 
@@ -21,7 +21,7 @@ Quoting the wiki linked above:
 
 We have discussed **polymorphism** briefly with respect to the `+` operator in a previous lab. The `+` operator is used to denote a variety of operations depending on its surroundings; it performs concatenation on `String`s and addition on numerical primitives. In other words, the `+` operator has **multiple forms** or **multiple definitions**. The word "polymorphism" broken into its roots means "many forms".
 
-We have also discussed polymorphism in the context of overloading functions by creating multiple functions sharing an identifier to deal with different argument configurations.
+We have also discussed polymorphism in the context of overloading methods by creating multiple methods sharing an identifier to deal with different argument configurations.
 
 Finally, we have touched on polymorphism in the context of **class inheritance**; every class **inherits from** (or **extends**) the `Object` class, meaning:
 
@@ -54,7 +54,7 @@ public interface Polygon
 }
 ```
 
-The methods in the `interface` above (and in any `interface`) **must** be `public` and either `abstract` or `static` but not both. In fact, the `public abstract` on the start of each method declaration above can be omitted; methods in interfaces are assumed to be `public`, and if they aren't specified to be `static` then they are assumed to be `abstract`. Most IDEs will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods.
+The methods in the `interface` above (and in any `interface`) **must** be `public` and either `abstract` or `static` but not both. In fact, the "`public abstract`" on the start of each method declaration above can be omitted; methods in interfaces are assumed to be `public`, and if they aren't specified to be `static` then they are assumed to be `abstract`. Most IDEs will grey-out these modifiers and inform (when moused over) that they are redundant for `interface` methods.
 
 The class data above (`DEFAULT_N_SIDES`) is `public`, `final`, and `static`. These three modifiers, like `public` and `abstract` for the methods, are redundant and can be omitted. 
 
@@ -72,7 +72,7 @@ public interface Polygon
 }
 ```
 
-We will create four implementations of the `Polygon` interface: `Rectangle`, `Triangle`, `Square`, and `Circle`. `Rectangle` has been done below. `Rectangle` is done below, and you'll create the others in your lab.
+We will create four implementations of the `Polygon` interface: `Rectangle`, `Triangle`, `Square`, and `Circle`. `Rectangle` is done below, and you'll create the others in your lab.
 
 <a name="rectangle"></a>
 
@@ -134,18 +134,18 @@ public class Rectangle implements Polygon
 }
 ```
 
-**<a name="q1"></a>[EXERCISE 1](#a1)** Notice that the `setWidth` and `setHeight` methods are very similar. One could even say they are repetitive. How might one change the WET solution above into a DRY solution?
+**<a name="q1"></a>[EXERCISE 1](#a1)** Notice that the `setWidth` and `setHeight` methods are very similar. One could even say they are repetitive. If we were to decide to change our validation procedure for new lengths, we would have to update these two methods individually. This is error-prone in terms of maintenance: we could easily change one and forget to change the other. How might one change the WET solution above into a DRY solution?
 
-The `@Override` annotation on all methods which are overridden from the `Polygon` `interface` are new; let's discuss them. To override a method is to replace the an inherited method with a new one. These `@Override` tags specify that the subsequent methods are taking the place of the abstract ones in the `Polygon` `interface`. While these tags are not mandatory when overriding methods, they are beneficial for the following reasons:
+We haven't seen the `@Override` tags before; let's discuss them. To override a method is to replace the an inherited method with a new one. These `@Override` tags specify that the subsequent methods are taking the place of the abstract ones in the `Polygon` `interface`, i.e. overriding the `Polygon` methods with new implementations. While these tags are not mandatory when overriding methods, they are beneficial for the following reasons:
 
-* They will cause a compile-time error if an overridden method declaration has a typo (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can be created where overriding was intended.
+* They will cause a compile-time error if an overridden method declaration has a typo (e.g. an incorrect identifier or incorrect sequence of arguments), which makes such errors easier to identify and fix; otherwise, a new method can accidentally be created where overriding was intended.
 * They improve readability. In fact, many IDEs will display extra information detailing the location of the method being overridden if the `@Override` annotation is present before a method.
 
 The implementing class is said to **inherit from** the interface. Above, `Rectangle` inherits from `Polygon`. This is one example of **inheritance** in Java. We'll cover one more example in this reading, and two more in the next reading.
 
 ## Interfaces and Encapsulation
 
-You might have noticed already how well `interface`s fit with the principle of encapsulation. The `interface` defines how clients will interact with implementations, but leaves the specifics of what goes on "under the hood" in the implementations up to them.
+You might have noticed already how well `interface`s mix with the principle of encapsulation. The `interface` defines how clients will interact with implementations, but leaves the specifics of what goes on "under the hood" in the implementations up to them.
 
 Many different implementations of a single interface can be made. Moreover, members of these different interfaces can all be stored in variables of the same type. We could declare and instantiate a `Rectangle` instance like this:
 
@@ -166,9 +166,9 @@ Polygon myPoly = new Rectangle(3, 4);
 myPoly = new Triangle(3, 4, 5);
 ```
 
-This does come with a tradeoff, however: `myPoly` "doesn't know", at any given time, which implementation it references an instance of, so it cannot be used to access members of `Rectangle` or `Triangle` which are not declared in `Polygon`. So, the two implementations can be used interchangeably in `Polygon` variables, but these variables are limited to the functionality defined in the `Polygon` class. It is imperative, then, to declare **all** necessary methods for client interaction with `Polygon`s in the interfact itself.
+This does come with a tradeoff, however: `myPoly` "doesn't know", at any given time, which implementation it references an instance of, so it cannot be used to access members of `Rectangle` or `Triangle` which are not declared in `Polygon`. So, the two implementations can be used interchangeably in `Polygon` variables, but these variables are limited to the functionality defined in the `Polygon` class. It is imperative, then, to declare **all** necessary methods for client interaction with `Polygon`s in the interface itself.
 
-**<a name="q2"></a>[EXERCISE 2](#a2)** In the [`Rectangle`](#rectangle) implementation above, the `setWidth` and `setHeight` methods are private. Why might that be?
+**<a name="q2"></a>[EXERCISE 2](#a2)** In the [`Rectangle`](#rectangle) implementation above, why do you think the `setWidth` and `setHeight` methods are private?
 
 ## `default`
 
@@ -276,7 +276,7 @@ public interface Person
 }
 ```
 
-Consider further the goal of creating a `Student` interface. Any `Student` is also a `Person`, and should thereby have all of the functionality of a `Person`. We could simply copy-paste the contents of `Person` into `Student`, then add some **extra stuff**™:
+Imagine you need to create a `Student` interface. Any `Student` is also a `Person`, and should therefore have all of the functionality of a `Person`. We could simply copy-paste the contents of `Person` into `Student`, then add some **extra stuff**™:
 
 ```java
 public interface Student
@@ -312,7 +312,7 @@ This way, `Student` is shorter, and edits to `Person` will also update `Student`
 
 This is an example of **inheritance**. The `Student` class **inherits from** the `Person` class. If a class implements the `Student` interface, it will inherently implement the `Person` interface as well, so any `Student` instance is also a `Person` instance.
 
-Note that the extended interface outlines a smaller or more specific category of objects. Every `Student` is a `Person`, but not every `Person` is a `Student`, so if we know someone is a `Student` then we can attribute more specificity to our understanding of their characteristics. The **extra stuff**™ in `Student` doesn't apply to all people, because it is too student-specific, so it must outline a smaller subset of people.
+Note that the extended interface outlines a smaller or more specific category of objects. Every `Student` is a `Person`, but not every `Person` is a `Student`, so if we know someone is a `Student` then we can attribute more specificity to our understanding of their characteristics. The **extra stuff**™ in `Student` doesn't apply to all people, because it is too specific, so it must outline a smaller subset of people.
 
 ## Multiple Inheritance
 
@@ -349,7 +349,7 @@ public interface Faculty extends Person
 }
 ```
 
-The, imagine you want to implement a `TA` (**T**eaching **A**ssistant) class. A `TA` is both a `Student` and `Faculty`.
+Then, imagine you want to implement a `TA` (**T**eaching **A**ssistant) class. Most TA's are graduate students who run some sessions in undergraduate courses, so a `TA` is both a `Student` and `Faculty`. As such, the `TA` class must implement both interfaces.
 
 At first glance, you might want to implement `TA` like this:
 
@@ -413,10 +413,10 @@ Of course, the method can be overwritten with in the normal sense as well:
 
 ```java
 @Override
-    public String getInstitution()
-    {
-        return this.institution;
-    }
+public String getInstitution()
+{
+    return this.institution;
+}
 ```
 
 This second overwritten `getInstitution` would require the addition of a `String institution` to the `TA` class, of course.
@@ -464,25 +464,25 @@ This extension requires the same clarification as the `TA` class: it must either
 
 ### **<a name="a1"></a>[EXERCISE 1](#q1)** 
 
-We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit redundant; as is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
+We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit more work than necessary. As is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
 
 ### **<a name="a2"></a>[EXERCISE 2](#q2)**
 
-`Rectangle` is an implementation of `Polygon`; presumably its intended purpose, then, is to be referenced through a `Polygon` variable, otherwise it would just be implemented without the interface. `Polygon` doesn't have `setWidth` and `setHeight` methods, so there is no reason to make them public to `Rectangle`, as they would be inaccessible from `Polygon` variables anyway. Nothing would break if these extra methods were made public, but they are not part of the `Polygon` functionality, so they've been categorized as stuff happening "under the hood", not part of the interface through which `Polygons` interact, and therefore made inaccessible to clients.
+`Rectangle` is an implementation of `Polygon`; presumably its intended purpose, then, is to be referenced through a `Polygon` variable, otherwise it would just be implemented without the interface. `Polygon` doesn't have `setWidth` and `setHeight` methods, so there is no reason to make them public in `Rectangle`, as they would be inaccessible from `Polygon` variables anyway. Nothing would break if these extra methods were made public, but they are not part of the `Polygon` functionality, so they've been categorized as "stuff happening under the hood", not part of the interface through which `Polygons` interact, and therefore made inaccessible to clients. Nothing would break if these methods were made public.
 
 ### **<a name="a3"></a>[EXERCISE 3](#q3)**
 
-The new method should be given a default implementation. This way, you'll only need to update implementations whose needs stray from this default.
+The new method should be given a default implementation. This way, you'll only need to update implementing classes whose needs stray from this default.
 
 ### **<a name="a4"></a>[EXERCISE 4](#q4)**
 
-Some of the following are kind of a stretch, as the formal definitions of a lot of these vary based on context, and some of them should be inheritance through [composition](https://en.wikipedia.org/wiki/Composition_over_inheritance). For instance, a `JetPlane` here is represented as "A `JetEngine` with **extra stuff**™", but it would be more accurate to say that a `JetPlane` contains a `JetEngine`, so a `JetPlane` would contain a field variable of type `JetEngine` instead of extending it. My point is, don't worry too much about the specifics of my "solution" below, as it is very subjective.
+Some of the following are kind of a stretch, as the formal definitions of a lot of these vary based on context, and some of them should be inheritance through [composition](https://en.wikipedia.org/wiki/Composition_over_inheritance). For instance, a `JetPlane` here is represented as "A `JetEngine` with **extra stuff**™", but it would be more accurate to say that a `JetPlane` contains a `JetEngine`, so a `JetPlane` would contain a field variable of type `JetEngine` instead of extending it. It is also very arguable that many of these would be concrete classes, not interfaces, so they would use `implements` instead of `extends`. My point is, don't worry too much about the specifics of my "solution" below, as it is very subjective and/or context-dependent.
 
 * `Vehicle`
 * `Propeller`
 * `JetEngine` (does this count as a vehicle? you could ride one for a short time...)
 * `AerialVehicle extends Vehicle`
-* `Boat extends Vehicle, Propeller`
+* `Boat extends Vehicle`
 * `WheeledVehicle extends Vehicle`
 * `Sedan extends WheeledVehicle`
 * `Truck extends WheeledVehicle`
@@ -595,11 +595,11 @@ Write me a nice note. It might be about that goofy `InputHandler` class above. I
 
 ## Task 5
 
-If you're not **very familiar** with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) covering the two coordinate systems before starting this task.
+If you're not very familiar with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) covering the two coordinate systems before starting this task.
 
-Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes. The `Point` class is missing one of its accessor methods! Keeping the two coordinate systems (cartesian and polar) in mind, identify which "getter" method is missing, and add it to the `Point` class.
+Download [point.zip](./point.zip). Read the `Point` `interface` defined in `Point.java`. You will refer to it throughout this task, as it contains descriptions of all methods. You must implement these methods in the provided `PolarPoint` and `CartesianPoint` classes.
 
-If you mouse over the underlined immediate syntax errors in `CartesianPoint.java` and `PolarPoint.java`, your IDE will likely instruct you on a shortcut to create (empty) method definitions for all missing abstract methods from the `Point` `interface`.
+If you mouse over the underlined immediate syntax errors in `CartesianPoint.java` and `PolarPoint.java`, your IDE will likely instruct you on a shortcut to create (empty) method definitions for all missing abstract methods from the `Point` `interface`. This isn't true for all IDEs, so you might need to type them out.
 
 Create a client class to test these methods.
 
