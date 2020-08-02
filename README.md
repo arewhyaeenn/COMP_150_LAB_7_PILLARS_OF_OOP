@@ -500,6 +500,8 @@ Some of the following are kind of a stretch, as the formal definitions of a lot 
 * `MotorBoat extends Boat, Propeller`
 * `Canoe extends Boat`
 
+# Lab Assignment
+
 ## Task 1
 
 Create a client to test the `Rectangle` class above. Start with the client below, and test every `public` element in the `Rectangle` class. Note that `myRectangle` is declared as a `Polygon` but uses the `Rectangle` constructor; because `Rectangle implements Polygon`, any `Rectangle` **is** a `Polygon`. Because `myRectangle` is declared as a `Polygon` and not as a `Rectangle`, it can only be used to access implemented members of the `Polygon` class, and not to access other members of the `Rectangle` class.
@@ -605,7 +607,7 @@ Create a client class to test these methods.
 
 Note that in both `PolarPoint` and `CartesianPoint`, the instance data is `private`, but all of the methods defined in `Point` are `public`. This is an example of **encapsulation**; the data and interface are separated, so changes can be made to `PolarPoint` or `CartesianPoint` individually and as long as these two classes adhere to the `Point` interface, uses of `Point`s in other classes will not need to change.
 
-## Bonus Task
+## Task 6 (Optional)
 
 This is a mathy bonus task that has nothing to do with polymorphism. It is not worth extra credit.
 
