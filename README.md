@@ -293,7 +293,7 @@ public interface Student
 }
 ```
 
-Of course, this is a clear violation of DRY programming. Any time we update `Person`, we will also have to update `Student` in a similar way. Beyond the repeated code, we've increased the amount of work to maintain our code base in the future.
+Of course, this is a clear violation of DRY programming. Any time we update `Person`, we will also have to update `Student` in a similar way.
 
 We can instead use the `extends` keyword, to create a `Student` interface containing everything from `Person`, but with some **extra stuff**™:
 
