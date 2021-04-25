@@ -595,6 +595,8 @@ public class InputHandler
 
 Write me a nice note. It might be about that goofy `InputHandler` class above. It might be about my outstanding hairdo. If you are in one of my classes, submit it with your lab. If not, write it on a napkin and burn it in a small metal or glass container, and then howl at the sky for precisely ten seconds and your message will be delivered to me by the owl or butterfly nearest you at its earliest convenience. Note that constructive criticism does not qualify as "nice" and will not receive points.
 
+(not graded)
+
 ## Task 5
 
 If you're not very familiar with cartesian and polar coordinates, check out [this video](https://www.youtube.com/watch?v=L4v98ZZft68) covering the two coordinate systems before starting this task.
