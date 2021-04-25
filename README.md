@@ -464,7 +464,7 @@ This extension requires the same clarification as the `TA` class: it must either
 
 ### **<a name="a1"></a>[EXERCISE 1](#q1)** 
 
-We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`", but even this would be a bit more work than necessary. As is, the `if`/`else` in each method is just using `0` if the input is negative, and the input otherwise, so it can be replaced by a call to `Math.max`.
+We've repeated code in the `setWidth` and `setHeight` methods almost exactly. This could be replaced with a call to a new method "`validateLength`" method, in which we can put the repeated code.
 
 ### **<a name="a2"></a>[EXERCISE 2](#q2)**
 
